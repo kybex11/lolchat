@@ -1,0 +1,51 @@
+.container_chat {
+    color: white;
+}
+
+.navbar_ {
+    display: flex;
+    justify-content: center;
+}
+
+.navbar_ button {
+    font-size: 20px;
+    border: none;
+    background: none;
+    color: white;
+    padding-right: 50px;
+    padding-top: 10px;
+    cursor: pointer;
+    font-family: b612;
+}
+
+.chats_view {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
+
+.chats_view button {
+    border: none;
+    color: white;
+    background: none;
+    cursor: pointer;
+    font-family: b612;
+}
+
+.message-view {
+    padding: 1px;
+}
+
+.h3_blk, .h4_blk {
+    padding: 1px;
+}
+
+.message-container { 
+    width: 500px;
+    height: 500px;
+    overflow-y: auto;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}

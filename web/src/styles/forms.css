@@ -1,0 +1,26 @@
+.button_ {
+    border: none;
+    border-radius: 15px;
+    padding: 20px;
+    font-size: large;
+    font-family: b612;
+    color: white;
+    cursor: pointer;
+    background-color: rgb(95, 114, 239);
+}
+
+input {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 15px;
+    font-size: medium;
+}
+
+.h1_ {
+    color: white;
+    font-family: b612;
+}
+
+#status {
+    color: white;
+}

@@ -1,0 +1,83 @@
+/* import rules */
+@font-face {
+    font-family: 'kronaone';
+    src: url("/static/KronaOne-Regular.ttf");
+}
+
+@font-face {
+    font-family: 'b612';
+    src: url('/static/B612-Bold.ttf');
+}
+
+/* main rules */
+body {
+    background-color: #242424;
+}
+
+.logo-text {
+    font-family: kronaone;
+}
+
+.title {
+    color: white;
+    font-family: b612;
+    
+}
+.container {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.link {
+    color: white;
+    text-decoration: none;
+    font-size: 70px;
+    padding: 20px;
+    font-family: b612;
+}
+
+.pcontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.pcontainer h1 {
+    color: white;
+    font-size: 40px;
+    font-family: b612;
+}
+
+h1,h2,h3,h4, h5,h6,p {
+    font-family: b612;
+}
+
+/* unique rules */
+.left20 {
+    padding-right: 20%;
+}
+
+.red-text {
+    color: red;
+}
+
+.sample_one {
+    font-weight: bold;
+    text-align: center;
+    text-decoration: line-through;
+    text-decoration-thickness: 6px;
+}
+
+.h1 {
+    font-size: 50px; 
+}
+
+.h3 {
+    font-size: 40px;
+}
+
+.white-text {
+    color: white;
+}

@@ -1,0 +1,28 @@
+.navbar {
+    background-color: white;
+    width: 98vw;
+    height: 45px;
+    border-radius: 15px;
+    display: flex;
+    opacity: 1;
+
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+.navbar-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 50px;
+    font-size: large;
+}
+
+.logo {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 20px;
+    margin-left: 10px;
+}
