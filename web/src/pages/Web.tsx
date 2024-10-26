@@ -26,6 +26,7 @@ interface MessageData {
 
 interface MessageStruct {
   content: string; // Поле содержимого сообщения
+  sender: string;
 }
 
 interface InputMessageProps {
@@ -61,7 +62,6 @@ const InputMessage: React.FC<InputMessageProps> = ({ messageInput, setMessageInp
 
 export default function Web() {
   const [isFriends, setIsFriends] = useState<boolean>(false);
-  const [isBlocked, setIsBlocked] = useState<boolean>(false);
   const [isFriendRequests, setIsFriendRequests] = useState<boolean>(false);
   const [friends, setFriends] = useState<string[]>([]);
   const [data, setData] = useState<ResponseData | null>(null);
@@ -69,6 +69,9 @@ export default function Web() {
   const [showChat, setShowChat] = useState<boolean>(false);
   const [currFriend, setFriend] = useState<string>('');
   const [messageInput, setMessageInput] = useState<string>(''); // Состояние для текста в поле ввода
+
+
+  const messageContainerRef = useRef<HTMLDivElement>(null);
 
   const username = getUsername();
   const _username = getUsername() || '';
@@ -195,52 +198,49 @@ export default function Web() {
 
   // Функция для получения сообщений
   const fetchMessages = useCallback((friend: string) => {
-    fetch('http://localhost:3001/getMessages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userone: username, usertwo: friend }),
-    })
-      .then((response: Response) => response.json())
-      .then((data: MessageData) => {
-        setMessages(data.data);
+    if (messageContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = messageContainerRef.current;
+      const isAtBottom = scrollHeight - scrollTop === clientHeight;
+
+      fetch('http://localhost:3001/getMessages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userone: username, usertwo: friend }),
       })
-      .catch((error: Error) => console.error(error));
+        .then((response: Response) => response.json())
+        .then((data: MessageData) => {
+          setMessages(data.data);
+          
+          if (messageContainerRef.current) {
+            if (isAtBottom) {
+              // Scroll to the bottom if the user was at the bottom before update
+              messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+            } else {
+              // Otherwise, restore the scroll position to where the user left off
+              messageContainerRef.current.scrollTop = scrollTop;
+            }
+          }
+        })
+        .catch((error: Error) => console.error(error));
+    }
   }, [username]);
 
-  // Обновляем сообщения каждые 1 секунду, если выбран друг
-  useEffect(() => {
-    if (currFriend) {
-      const intervalId = setInterval(() => {
-        fetchMessages(currFriend);
-      }, 1000); // Интервал обновления сообщений каждые 1 секунду
-
-      return () => clearInterval(intervalId); // Очищаем интервал при размонтировании компонента
-    }
-  }, [currFriend, fetchMessages]);
-
-  console.log(messages);
-
-  const ChatView = () => {
-    return (
-      <>
-        <div className="message-container">
-        {Array.isArray(messages) && messages.length > 0 ? (
-          messages.map((msg, index) => (
-            <div className="message-view" key={index}>
-              <h3 className='h3_blk'>{msg.sender}</h3>
-              <h4 className='h4_blk'>{msg.content}</h4>
-            </div>
-          ))
-        ) : (
-          <div>No messages yet.</div>
-        )}
-      </div>
-    </>
-    )
-    
-  };
+  const ChatView = () => (
+    <div ref={messageContainerRef} className="message-container">
+      {Array.isArray(messages) && messages.length > 0 ? (
+        messages.map((msg, index) => (
+          <div className="message-view" key={index}>
+            <h3 className='h3_blk'>{msg.sender}</h3>
+            <h4 className='h4_blk'>{msg.content}</h4>
+          </div>
+        ))
+      ) : (
+        <div>No messages yet.</div>
+      )}
+    </div>
+  );
 
   const NoChatView = () => (
     <div>
@@ -313,7 +313,7 @@ export default function Web() {
           <div className="viewer">
             {isFriends && <FriendsComponent />}
             {isFriendRequests && <FriendRequestsComponent />}
-            {!isBlocked && !isFriends && !isFriendRequests && <Chat />}
+            {!isFriends && !isFriendRequests && <Chat />}
           </div>
         </div>
       </>
