@@ -2,6 +2,11 @@
     color: white;
 }
 
+* {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
 .navbar_ {
     display: flex;
     justify-content: center;
@@ -44,8 +49,23 @@
     width: 500px;
     height: 500px;
     overflow-y: auto;
-    border-radius: 20px;
-    border: 1px solid #ccc;
     padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.input_field_chat {
+    border: none;
+    height: 40px;
+    width: 200px;
+    border-radius: 15px;
+}
+
+.send_field_chat {
+    border: none;
+    height: 60px;
+    width: 100px;
+    border-radius: 15px;
+    background-color: rgb(37, 172, 255);
+    color: white;
+    font-size: large;
+    cursor: pointer;
 }

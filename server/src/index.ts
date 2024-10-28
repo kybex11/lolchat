@@ -104,6 +104,12 @@ const createNewMessage = (req: Request, res: Response, next: NextFunction): void
 
             messages = JSON.parse(data);
 
+            messages.push({ sender: userone, content: message });
+
+            fs.writeFileSync(filePath, JSON.stringify(messages, null, 2));
+    
+            res.json({ success: true, message: "Message added successfully." });
+
         } catch (err) {
 
             try {
@@ -111,6 +117,12 @@ const createNewMessage = (req: Request, res: Response, next: NextFunction): void
                 const data = fs.readFileSync(filePath2, 'utf8');
 
                 messages = JSON.parse(data);
+
+                messages.push({ sender: userone, content: message });
+
+                fs.writeFileSync(filePath2, JSON.stringify(messages, null, 2));
+        
+                res.json({ success: true, message: "Message added successfully." });
 
             } catch (err) {
 
@@ -122,12 +134,6 @@ const createNewMessage = (req: Request, res: Response, next: NextFunction): void
 
         }
 
-
-        messages.push({ sender: userone, content: message });
-
-        fs.writeFileSync(filePath, JSON.stringify(messages, null, 2));
-
-        res.json({ success: true, message: "Message added successfully." });
 
     } catch (err) {
 
@@ -149,17 +155,19 @@ const getMessages = (req: Request, res: Response, next: NextFunction): void => {
     try {
         const data = fs.readFileSync(filePath, 'utf-8');
         messages = JSON.parse(data);
+
+        res.json({ data: messages });
     } catch (err) {
         try {
             const data = fs.readFileSync(filePath2, 'utf-8');
             messages = JSON.parse(data);
+
+            res.json({ data: messages });
         } catch (err) {
             res.json({ data: "DM not found" }); // Potential double response
             return; // Exit to prevent further execution
         }
     }
-
-    res.json({ data: messages });
 };
 
 function addFriend(req: Request, res: Response): void {

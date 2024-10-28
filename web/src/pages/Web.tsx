@@ -47,9 +47,10 @@ export default function Web() {
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const messageInputRef = useRef<HTMLInputElement>(null);
 
-  const InputMessage: React.FC<InputMessageProps> = ({ messageInput, setMessageInput, sendMessage }) => {
-    
-  
+  const [displayedMessages, setDisplayedMessages] = useState<MessageStruct[]>([]);
+
+  const InputMessage = () => {
+
     // Восстанавливаем фокус на поле ввода только при первом открытии чата
     useEffect(() => {
       if (messageInputRef.current) {
@@ -67,6 +68,14 @@ export default function Web() {
         }
       }
     }, [showChat]); // Зависимость от showChat
+
+    const handleSend = () => {
+      const message = messageInputRef.current?.value;
+      sendMessageFunction(message);
+      if (messageInputRef.current) {
+        messageInputRef.current.value = '';
+      }
+    }
   
     return (
       <div>
@@ -74,8 +83,9 @@ export default function Web() {
           type="text"
           ref={messageInputRef}
           placeholder="Enter message here"
+          className='input_field_chat'
         />
-        <button onClick={sendMessage}>Send</button>
+        <button onClick={handleSend} className='send_field_chat'>Send</button>
       </div>
     );
   };
@@ -169,91 +179,187 @@ export default function Web() {
   }, [username]);
 
   // Функция для отправки сообщения
-  const sendMessage = () => {
-    if (!messageInput) return;
+  const sendMessageFunction = (message: string | undefined) => {
 
-    const messageInputRefCurrent = messageInputRef.current;
+    if (!message || !message.trim()) return;
 
-    if (messageInputRefCurrent)
-      setMessageInput(messageInputRefCurrent.value);
 
     fetch('http://localhost:3001/createMessage', {
+
       method: 'POST',
+
       headers: {
+
         'Content-Type': 'application/json'
+
       },
-      body: JSON.stringify({ userone: username, usertwo: currFriend, message: messageInput })
+
+      body: JSON.stringify({ userone: username, usertwo: currFriend, message })
+
     })
+
       .then((response: Response) => {
+
         if (!response.ok) {
-          throw new Error('Network response wat not ok');
+
+          throw new Error('Network response was not ok');
+
         }
+
         return response.json();
+
       })
+
       .then((data: ResponseData) => {
+
         if (data.success) {
-          setMessageInput(''); // Очищаем поле после отправки
-          fetchMessages(currFriend); // Обновляем сообщения
+
+          // После успешной отправки сообщения обновляем список сообщений
+
+          fetchMessages(currFriend);
+
+
+          // Прокрутка вниз после отправки сообщения
+
+          if (messageContainerRef.current) {
+
+            messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+
+          }
+
         } else {
+
           console.error('Error sending message: ', data.message);
+
           alert('Failed to send message: ' + data.message);
+
         }
+
       })
+
       .catch((error: Error) => console.error(error));
+
   };
 
   document.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
-      sendMessage();
+      sendMessageFunction('');
     }
   });
 
   const fetchMessages = useCallback((friend: string) => {
+
     if (messageContainerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = messageContainerRef.current;
-      const isAtBottomNow = scrollHeight - scrollTop === clientHeight;
-  
+
       fetch('http://localhost:3001/getMessages', {
+
         method: 'POST',
+
         headers: {
+
           'Content-Type': 'application/json',
+
         },
+
         body: JSON.stringify({ userone: username, usertwo: friend }),
+
       })
+
         .then((response: Response) => response.json())
+
         .then((data: MessageData) => {
-          setMessages(data.data);
-  
-          // Используем setTimeout для восстановления скролла
-          setTimeout(() => {
-            if (messageContainerRef.current) {
-              if (isAtBottomNow) {
-                // Прокручиваем вниз, если пользователь был внизу
+
+          const newMessages = data.data;
+
+
+          // Сравниваем новые сообщения с отображаемыми
+
+          if (JSON.stringify(newMessages) !== JSON.stringify(displayedMessages)) {
+
+            setDisplayedMessages(newMessages); // Обновляем отображаемые сообщения только если они изменились
+
+
+            // Прокрутка вниз при необходимости
+
+            setTimeout(() => {
+
+              if (messageContainerRef.current) {
+
                 messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
-              } else {
-                // Восстанавливаем позицию скролла
-                messageContainerRef.current.scrollTop = scrollTop;
+
               }
-            }
-          }, 0); // Задержка в 0 мс, чтобы дождаться обновления состояния
+
+            }, 0);
+
+          }
+
         })
+
         .catch((error: Error) => console.error(error));
+
     }
-  }, [username]);
+
+  }, [username, displayedMessages]);
+
+  useEffect(() => {
+
+    let interval: NodeJS.Timeout;
+
+
+    if (showChat && currFriend) {
+
+      // Первоначальная загрузка сообщений
+
+      fetchMessages(currFriend);
+
+
+      interval = setInterval(() => {
+
+        fetchMessages(currFriend);
+
+      }, 1000); // обновляем каждую секунду
+
+    }
+
+
+    return () => {
+
+      if (interval) {
+
+        clearInterval(interval); // Очищаем интервал при размонтировании или изменении currFriend
+
+      }
+
+    };
+
+  }, [showChat, currFriend, fetchMessages]);
 
   const ChatView = () => (
+
     <div ref={messageContainerRef} className="message-container">
-      {Array.isArray(messages) && messages.length > 0 ? (
-        messages.map((msg, index) => (
+
+      {Array.isArray(displayedMessages) && displayedMessages.length > 0 ? (
+
+        displayedMessages.map((msg, index) => (
+
           <div className="message-view" key={index}>
+
             <h3 className='h3_blk'>{msg.sender}</h3>
+
             <h4 className='h4_blk'>{msg.content}</h4>
+
           </div>
+
         ))
+
       ) : (
+
         <div>No messages yet.</div>
+
       )}
+
     </div>
+
   );
 
   const NoChatView = () => (
@@ -271,11 +377,7 @@ export default function Web() {
       )}
       {!showChat && <NoChatView />}
       {showChat && (
-        <InputMessage
-          messageInput={messageInput}
-          setMessageInput={setMessageInput}
-          sendMessage={sendMessage}
-        />
+        <InputMessage/>
       )}
     </div>
   );
