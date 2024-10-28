@@ -1,8 +1,7 @@
-import '../styles/navbar.css';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
-export default function Navbar() {
+export default function MobileNavbar() {
     const { t, i18n } = useTranslation();
     const [lang, setLang] = useState("en");
 
@@ -38,14 +37,14 @@ export default function Navbar() {
 
     return (
         <>
-        <br />
         <div className="navbar">
-            <button onClick={logoClick} className='logo'><h1 className='logo-text'>LoL</h1></button>
-            <button className='navbar-button' onClick={aboutClick}>{t('about')}</button>
-            <button className='navbar-button' onClick={webClick}>{t('openlol')}</button>
-            <button className='navbar-button' onClick={downloadsClick}>{t('download')}</button>
-        
-            <button className='navbar-button' onClick={changeLanguage}>{lang}</button>
+            <button className='navbar-button_m' onClick={logoClick}>Home</button>
+            <button className='navbar-button_m' onClick={aboutClick}>{t('about')}</button>
+            <button className='navbar-button_m' onClick={webClick}>{t('openlol')}</button>
+            <button className='navbar-button_m' onClick={downloadsClick}>{t('download')}</button>
+
+            
+            <button className='navbar-button_m' onClick={changeLanguage}>{lang}</button>
         </div>
         </>
     )

@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import Navbar from '../components/navbar';
 import '../styles/index.css';
 import { useEffect, useState } from 'react';
+import MobileNavbar from '../components/mobilenavbar';
 
 export default function App() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -35,9 +36,17 @@ function DesktopComponent() {
 }
 
 function MobileComponent() {
+  const { t } = useTranslation();
+
   return (
     <>
-    <h1>Currently not adapted for phones</h1>
+    <MobileNavbar/>
+    <div className="container">
+        <h2 className='title left20 h2_m'>LoL Chat - <span className='red-text sample_one'>{t('not')}</span> {t('messenger')}</h2>
+        <h3 className='title h3_m'>LoL Chat - {t('neweraofmessenging')}</h3>
+        <br />
+        <h1 className='white-text'>Currently the page in development</h1>
+      </div>
     </>
   )
 }

@@ -24,5 +24,12 @@
     background: none;
     cursor: pointer;
     padding: 20px;
-    margin-left: 10px;
+    margin-left: 10px
+}
+
+.navbar-button_m {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size:medium;
 }
