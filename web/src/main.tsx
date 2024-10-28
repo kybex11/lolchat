@@ -29,6 +29,12 @@ const resources = {
       "messenger": "Messenger",
       "neweraofmessenging": "new era of messenging",
       "downloads_timely": "Sorry, Currently downloads not available",
+
+      "text1": "LoL Chat is a messenger aimed at communication and convenience.",
+      "text2": "The product is developed in Russia by SSLabs organization.",
+      "text3": "Our goal is to achieve a regular online presence and active users.",
+      "text4": "We are waiting for you on our platform. ",
+      "text5": "if you want to work in SSLabs write to email (varnetcoding@gmail.com) or write to LoL to me personally (kybex11)."
     }
   },
   ru: {
@@ -41,6 +47,12 @@ const resources = {
       "messenger": "Мессенджер",
       "neweraofmessenging": "новая эра общения",
       "downloads_timely": "Извините, В данный момент скачивание не доступно",
+
+      "text1": "LoL Chat - это мессенджер направленный на общение и удобство общения.",
+      "text2": "Продукт разработан в России организацией SSLabs.",
+      "text3": "Наша задача это добиться обычного онлайна и активных пользователей",
+      "text4": "Ждем вас на нашей платформе.",
+      "text5": "Если вы хотите работать в SSLabs пишите на почту (varnetcoding@gmail.com) или пишите в LoL мне лично (kybex11)"
     }
   }
 }

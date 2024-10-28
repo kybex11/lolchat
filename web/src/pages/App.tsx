@@ -28,7 +28,7 @@ function DesktopComponent() {
       <div className="container">
         <h1 className='title left20 h1'>LoL Chat - <span className='red-text sample_one'>{t('not')}</span> {t('messenger')}</h1>
         <h3 className='title h3'>LoL Chat - {t('neweraofmessenging')}</h3>
-        <h1 className='white-text'>Simple chating</h1>
+        <h1 className='white-text'>Currently the page in development</h1>
       </div>
       </>
   )
