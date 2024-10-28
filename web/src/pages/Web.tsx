@@ -34,32 +34,6 @@ interface InputMessageProps {
   setMessageInput: (value: string) => void;
   sendMessage: () => void;
 }
-
-// Компонент для поля ввода сообщения
-const InputMessage: React.FC<InputMessageProps> = ({ messageInput, setMessageInput, sendMessage }) => {
-  const messageInputRef = useRef<HTMLInputElement>(null);
-
-  // Восстанавливаем фокус на поле ввода только при первом открытии чата
-  useEffect(() => {
-    if (messageInputRef.current) {
-      messageInputRef.current.focus();
-    }
-  }, []);
-
-  return (
-    <div>
-      <input
-        type="text"
-        ref={messageInputRef}
-        value={messageInput}
-        onChange={(e) => setMessageInput(e.target.value)}
-        placeholder="Enter message here"
-      />
-      <button onClick={sendMessage}>Send</button>
-    </div>
-  );
-};
-
 export default function Web() {
   const [isFriends, setIsFriends] = useState<boolean>(false);
   const [isFriendRequests, setIsFriendRequests] = useState<boolean>(false);
@@ -70,8 +44,41 @@ export default function Web() {
   const [currFriend, setFriend] = useState<string>('');
   const [messageInput, setMessageInput] = useState<string>(''); // Состояние для текста в поле ввода
 
-
   const messageContainerRef = useRef<HTMLDivElement>(null);
+  const messageInputRef = useRef<HTMLInputElement>(null);
+
+  const InputMessage: React.FC<InputMessageProps> = ({ messageInput, setMessageInput, sendMessage }) => {
+    
+  
+    // Восстанавливаем фокус на поле ввода только при первом открытии чата
+    useEffect(() => {
+      if (messageInputRef.current) {
+        // Сохраняем текущее состояние скролла
+        const messageContainer = messageContainerRef.current;
+        const { scrollTop, scrollHeight, clientHeight } = messageContainer!;
+        const isAtBottom = scrollHeight - scrollTop === clientHeight;
+  
+        // Устанавливаем фокус на поле ввода
+        messageInputRef.current.focus();
+  
+        // Если пользователь был внизу, прокручиваем обратно
+        if (isAtBottom) {
+            messageContainer!.scrollTop = messageContainer!.scrollHeight;
+        }
+      }
+    }, [showChat]); // Зависимость от showChat
+  
+    return (
+      <div>
+        <input
+          type="text"
+          ref={messageInputRef}
+          placeholder="Enter message here"
+        />
+        <button onClick={sendMessage}>Send</button>
+      </div>
+    );
+  };
 
   const username = getUsername();
   const _username = getUsername() || '';
@@ -165,6 +172,11 @@ export default function Web() {
   const sendMessage = () => {
     if (!messageInput) return;
 
+    const messageInputRefCurrent = messageInputRef.current;
+
+    if (messageInputRefCurrent)
+      setMessageInput(messageInputRefCurrent.value);
+
     fetch('http://localhost:3001/createMessage', {
       method: 'POST',
       headers: {
@@ -196,12 +208,11 @@ export default function Web() {
     }
   });
 
-  // Функция для получения сообщений
   const fetchMessages = useCallback((friend: string) => {
     if (messageContainerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = messageContainerRef.current;
-      const isAtBottom = scrollHeight - scrollTop === clientHeight;
-
+      const isAtBottomNow = scrollHeight - scrollTop === clientHeight;
+  
       fetch('http://localhost:3001/getMessages', {
         method: 'POST',
         headers: {
@@ -212,16 +223,19 @@ export default function Web() {
         .then((response: Response) => response.json())
         .then((data: MessageData) => {
           setMessages(data.data);
-          
-          if (messageContainerRef.current) {
-            if (isAtBottom) {
-              // Scroll to the bottom if the user was at the bottom before update
-              messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
-            } else {
-              // Otherwise, restore the scroll position to where the user left off
-              messageContainerRef.current.scrollTop = scrollTop;
+  
+          // Используем setTimeout для восстановления скролла
+          setTimeout(() => {
+            if (messageContainerRef.current) {
+              if (isAtBottomNow) {
+                // Прокручиваем вниз, если пользователь был внизу
+                messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+              } else {
+                // Восстанавливаем позицию скролла
+                messageContainerRef.current.scrollTop = scrollTop;
+              }
             }
-          }
+          }, 0); // Задержка в 0 мс, чтобы дождаться обновления состояния
         })
         .catch((error: Error) => console.error(error));
     }
