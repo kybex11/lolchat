@@ -43,7 +43,7 @@ export default function FriendsComponent() {
         <>
         <ul>
             {friends.map(friend => (
-                <li key={friend}>{friend} <button onClick={() => removeFriend(friend)}>-</button></li>
+                <li key={friend}>{friend} <button className="removeFriend_b" onClick={() => removeFriend(friend)}>-</button></li>
             ))}
         </ul>
         </>

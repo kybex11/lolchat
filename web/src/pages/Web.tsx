@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import FriendsComponent from './components/friends';
 import FriendRequestsComponent from './components/requests';
 import '../styles/chat.css';
+import ProfileInverted from '/profile_inverted.svg';
 
 interface FormData {
   username: string;
@@ -134,6 +135,10 @@ export default function Web() {
           setData(data);
           if (data.success) {
             updateFriends(); // Обновляем список друзей после успешного логина
+          } else {
+            if (data.message == "Invalid username or password") {
+              window.location.href = "/router"
+            }
           }
         })
         .catch((error: Error) => console.error(error));
@@ -405,36 +410,75 @@ export default function Web() {
 
   if (data && data.success) {
     return (
+
       <>
+  
         <div className="container_chat">
+  
           <div className="navbar_">
+  
             <div className="buttons">
+  
               <button onClick={setIsFriend}>Friends</button>
+  
               <button onClick={setIsFriendRequest}>Friend Requests</button>
+  
             </div>
-            <div className="profile_button">
-              <button>
-                <img src="/profile.svg" alt="My Profile" height="30" />
-              </button>
+  
+          </div>
+
+  
+          <div className="chat_layout">
+  
+            <div className="friends_list">
+              <h1>Friends</h1>
+  
+              {friends.map(friend => (
+  
+                <button className='friends_button' key={friend} onClick={() => openDM(friend)}>
+                  <div className="friend_item">
+                    {friend}
+                    <img className='friends_button_image' src={ProfileInverted} alt="profile-invert" />
+                  </div>
+                  
+  
+                </button>
+  
+              ))}
+  
+              {isFriends && <FriendsComponent />}
+  
+              {isFriendRequests && <FriendRequestsComponent />}
+  
             </div>
+  
+            <div className="chat_container">
+  
+              {showChat && <Chat />}
+  
+              {!showChat && <NoChatView />}
+  
+            </div>
+  
           </div>
-          <hr />
-          <div className="chats_view">
-            {friends.map(friend => (
-              <button key={friend} onClick={() => openDM(friend)}>
-                {friend}
-              </button>
-            ))}
-          </div>
-          <div className="viewer">
-            {isFriends && <FriendsComponent />}
-            {isFriendRequests && <FriendRequestsComponent />}
-            {!isFriends && !isFriendRequests && <Chat />}
-          </div>
+  
         </div>
+  
       </>
+  
     );
+  
   }
 
   return <div>Loading...</div>;
 }
+
+// <div className="profile_button">
+  
+//<button>
+  
+//<img src="/profile.svg" alt="My Profile" height="30" />
+
+//</button>
+
+//</div> 

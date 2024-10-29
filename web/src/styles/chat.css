@@ -1,6 +1,29 @@
 .container_chat {
     color: white;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
+
+body {
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+.chat_layout {
+    display: flex;
+    flex: 1;
+}
+
+
+.friends_list {
+    min-width: 170px;
+    background-color: rgba(11, 11, 11, 0.5);
+    padding: 10px;
+    overflow-y: auto;
+}
+
 
 * {
     user-select: none;
@@ -10,6 +33,8 @@
 .navbar_ {
     display: flex;
     justify-content: center;
+    background-color: rgba(11, 11, 11, 0.5);
+    height: 45px;
 }
 
 .navbar_ button {
@@ -29,6 +54,34 @@
     width: 200px;
 }
 
+.chat_container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.friends_button_image {
+    height: 35px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.friends_button {
+    border: none;
+    background: none;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.removeFriend_b {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: red;
+    font-size: 20px;
+}
+
 .chats_view button {
     border: none;
     color: white;
@@ -46,10 +99,15 @@
 }
 
 .message-container { 
-    width: 500px;
-    height: 500px;
-    overflow-y: auto;
     padding: 10px;
+    max-height: 500px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.friend_item {
+    display: flex;
+    align-items: center;
 }
 
 .input_field_chat {

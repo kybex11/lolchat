@@ -81,8 +81,23 @@ function createNewDM(req: Request, res: Response) {
 
 function removeDM(req: Request, res: Response) {
     const { userone, usertwo } = req.body;
-    fs.unlinkSync(`dm/${userone}+${usertwo}.json`);
-    res.json({ success: true });
+
+    const filePath = path.join(__dirname, 'dm', `${userone}+${usertwo}.json`);
+    const filePath2 = path.join(__dirname, 'dm', `${usertwo}+${userone}.json`);
+
+    try {
+        fs.unlinkSync(filePath);
+        res.json({ success: true });
+    } catch (err) {
+        try {
+            fs.unlinkSync(filePath2);
+            res.json({ success: true });
+        } catch (err) {
+            console.log('[server] error removing friend' + err);
+        }
+    }
+    
+    
 }
 
 const createNewMessage = (req: Request, res: Response, next: NextFunction): void => {
@@ -218,6 +233,11 @@ function login(req: Request, res: Response) {
     }
 };
 
+function removeFriend(req: Request, res: Response) {
+    const { userone, usertwo } = req.body;
+    //TODO: Make
+}
+
 app.post('/newdm', createNewDM);//
 app.post('/rmdm', removeDM);
 
@@ -229,6 +249,7 @@ app.post('/login', login);//
 
 app.post('/addFriends', addFriend);//
 app.post('/getFriends', getFriends);//
+app.post('/removeFriend', removeFriend);//
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
