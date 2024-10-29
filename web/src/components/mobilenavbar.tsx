@@ -22,11 +22,7 @@ export default function MobileNavbar() {
     const aboutClick = () => {
         window.location.href = "/about";
     }
-
-    const accountClick = () => {
-        window.location.href = "/account";
-    }
-
+    
     const webClick = () => {
         window.location.href = "/web";
     }

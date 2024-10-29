@@ -22,7 +22,7 @@ export default function about() {
 }
 
 function DesktopComponent() {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     return (
         <>
@@ -43,7 +43,7 @@ function DesktopComponent() {
 
 function MobileComponent() {
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     return (
         <>

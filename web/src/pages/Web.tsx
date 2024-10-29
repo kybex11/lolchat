@@ -1,6 +1,6 @@
 import { checkLogin, getPassword, getUsername } from '../cookies';
 import '../styles/index.css';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import FriendsComponent from './components/friends';
 import FriendRequestsComponent from './components/requests';
 import '../styles/chat.css';
@@ -30,20 +30,13 @@ interface MessageStruct {
   sender: string;
 }
 
-interface InputMessageProps {
-  messageInput: string;
-  setMessageInput: (value: string) => void;
-  sendMessage: () => void;
-}
 export default function Web() {
   const [isFriends, setIsFriends] = useState<boolean>(false);
   const [isFriendRequests, setIsFriendRequests] = useState<boolean>(false);
   const [friends, setFriends] = useState<string[]>([]);
   const [data, setData] = useState<ResponseData | null>(null);
-  const [messages, setMessages] = useState<MessageStruct[]>([]);
   const [showChat, setShowChat] = useState<boolean>(false);
   const [currFriend, setFriend] = useState<string>('');
-  const [messageInput, setMessageInput] = useState<string>(''); // Состояние для текста в поле ввода
 
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const messageInputRef = useRef<HTMLInputElement>(null);
@@ -176,7 +169,6 @@ export default function Web() {
             });
         } else {
           setShowChat(true);
-          setMessages(data.data);
           setFriend(friend);
         }
       })
@@ -308,7 +300,7 @@ export default function Web() {
 
   useEffect(() => {
 
-    let interval: NodeJS.Timeout;
+    let interval: number;
 
 
     if (showChat && currFriend) {
@@ -318,7 +310,7 @@ export default function Web() {
       fetchMessages(currFriend);
 
 
-      interval = setInterval(() => {
+      interval = window.setInterval(() => {
 
         fetchMessages(currFriend);
 

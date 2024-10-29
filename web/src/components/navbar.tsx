@@ -24,10 +24,6 @@ export default function Navbar() {
         window.location.href = "/about";
     }
 
-    const accountClick = () => {
-        window.location.href = "/account";
-    }
-
     const webClick = () => {
         window.location.href = "/web";
     }
