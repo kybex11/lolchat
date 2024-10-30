@@ -17,7 +17,7 @@ export default function FriendRequestsComponent() {
         if (!friendName)
             alert('Field is empty');
 
-        fetch('http://localhost:3001/addFriends', {
+        fetch('http://lolchat.online/server/addFriends', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
