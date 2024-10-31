@@ -36,6 +36,11 @@ export default function Register() {
             return;
         }
 
+        if (username.length >= 18) {
+            alert('max length on username 18');
+            return;
+        }
+
         if (password !== retryPassword) {
             alert('Passwords do not match!');
             return;
@@ -47,7 +52,7 @@ export default function Register() {
             password: password,
         };
 
-        fetch('http://lolchat.online/server/register', {
+        fetch('http://localhost:3001/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

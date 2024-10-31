@@ -19,9 +19,11 @@ body {
 
 .friends_list {
     min-width: 170px;
+    max-width: 288px;
     background-color: rgba(11, 11, 11, 0.5);
     padding: 10px;
     overflow-y: auto;
+    flex-direction: column;
 }
 
 

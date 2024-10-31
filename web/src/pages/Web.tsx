@@ -38,6 +38,15 @@ export default function Web() {
   const [showChat, setShowChat] = useState<boolean>(false);
   const [currFriend, setFriend] = useState<string>('');
 
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userAgent);
+
+    setIsMobile(isMobileDevice);
+  }, [])
+
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const messageInputRef = useRef<HTMLInputElement>(null);
 
@@ -90,7 +99,7 @@ export default function Web() {
 
   // Функция для обновления списка друзей
   const updateFriends = useCallback(() => {
-    fetch('http://lolchat.online/server/getFriends', {
+    fetch('http://localhost:3001/getFriends', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -116,7 +125,7 @@ export default function Web() {
         password: _password,
       };
 
-      fetch('http://lolchat.online/server/login', {
+      fetch('http://localhost:3001/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -142,7 +151,7 @@ export default function Web() {
 
   // Функция для открытия чата с другом
   const openDM = useCallback((friend: string) => {
-    fetch('http://lolchat.online/server/getMessages', {
+    fetch('http://localhost:3001/getMessages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -153,7 +162,7 @@ export default function Web() {
       .then((data: MessageData) => {
         if (data.data === "DM not found") {
           // Создаем новый чат, если его не существует
-          fetch('http://lolchat.online/server/newdm', {
+          fetch('http://localhost:3001/newdm', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -181,7 +190,7 @@ export default function Web() {
     if (!message || !message.trim()) return;
 
 
-    fetch('http://lolchat.online/server/createMessage', {
+    fetch('http://localhost:3001/createMessage', {
 
       method: 'POST',
 
@@ -248,7 +257,7 @@ export default function Web() {
 
     if (messageContainerRef.current) {
 
-      fetch('http://lolchat.online/server/getMessages', {
+      fetch('http://localhost:3001/getMessages', {
 
         method: 'POST',
 
@@ -402,8 +411,23 @@ export default function Web() {
 
   if (data && data.success) {
     return (
-
       <>
+      {isMobile ? <MobileComponent /> : <DesktopComponent />}
+    </>
+    );
+  
+  }
+  function MobileComponent() {
+    return (
+      <>
+      <h1>hi</h1>
+      </>
+    )
+  }
+
+  function DesktopComponent() {
+  return (
+    <>
   
         <div className="container_chat">
   
@@ -422,27 +446,23 @@ export default function Web() {
   
           <div className="chat_layout">
   
-            <div className="friends_list">
-              <h1>Friends</h1>
-  
-              {friends.map(friend => (
-  
-                <button className='friends_button' key={friend} onClick={() => openDM(friend)}>
-                  <div className="friend_item">
-                    {friend}
-                    <img className='friends_button_image' src={ProfileInverted} alt="profile-invert" />
-                  </div>
-                  
-  
-                </button>
-  
-              ))}
+          <div className="friends_list">
+  <h1>Friends</h1>
+  {friends.map(friend => (
+    <div key={friend}>
+      <button className='friends_button' onClick={() => openDM(friend)}>
+        <div className="friend_item">
+          {friend}
+          <img className='friends_button_image' src={ProfileInverted} alt="profile-invert" />
+        </div>
+      </button>
+    </div>
+  ))}
+</div>
   
               {isFriends && <FriendsComponent />}
   
               {isFriendRequests && <FriendRequestsComponent />}
-  
-            </div>
   
             <div className="chat_container">
   
@@ -457,13 +477,13 @@ export default function Web() {
         </div>
   
       </>
-  
-    );
-  
-  }
+  )
+}
 
   return <div>Loading...</div>;
 }
+
+
 
 // <div className="profile_button">
   
