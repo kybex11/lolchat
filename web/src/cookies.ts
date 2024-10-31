@@ -32,6 +32,11 @@ export function setPasswordZero() {
     Cookies.remove('attributedevcode');
 }
 
+export function removeCookies() {
+    setPasswordZero();
+    setUsernameZero();
+}
+
 export function setUsernameZero() {
     Cookies.remove('attributedevname');
 }

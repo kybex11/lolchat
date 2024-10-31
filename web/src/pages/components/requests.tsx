@@ -14,8 +14,10 @@ export default function FriendRequestsComponent() {
         const friendName = inputRef.current?.value;
         console.log(friendName);
 
-        if (!friendName)
+        if (!friendName) {
             alert('Field is empty');
+            return;
+        }
 
         fetch('http://localhost:3001/addFriends', {
             method: 'POST',
