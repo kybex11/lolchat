@@ -52,7 +52,7 @@ export default function Register() {
             password: password,
         };
 
-        fetch('http://localhost:3001/register', {
+        fetch('http://lolchat.online/server/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

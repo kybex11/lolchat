@@ -101,7 +101,7 @@ export default function Web() {
 
   // Функция для обновления списка друзей
   const updateFriends = useCallback(() => {
-    fetch('http://localhost:3001/getFriends', {
+    fetch('http://lolchat.online/server/getFriends', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -127,7 +127,7 @@ export default function Web() {
         password: _password,
       };
 
-      fetch('http://localhost:3001/login', {
+      fetch('http://lolchat.online/server/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -153,7 +153,7 @@ export default function Web() {
 
   // Функция для открытия чата с другом
   const openDM = useCallback((friend: string) => {
-    fetch('http://localhost:3001/getMessages', {
+    fetch('http://lolchat.online/server/getMessages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ export default function Web() {
       .then((data: MessageData) => {
         if (data.data === "DM not found") {
           // Создаем новый чат, если его не существует
-          fetch('http://localhost:3001/newdm', {
+          fetch('http://lolchat.online/server/newdm', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -192,7 +192,7 @@ export default function Web() {
     if (!message || !message.trim()) return;
 
 
-    fetch('http://localhost:3001/createMessage', {
+    fetch('http://lolchat.online/server/createMessage', {
 
       method: 'POST',
 
@@ -259,7 +259,7 @@ export default function Web() {
 
     if (messageContainerRef.current) {
 
-      fetch('http://localhost:3001/getMessages', {
+      fetch('http://lolchat.online/server/getMessages', {
 
         method: 'POST',
 
