@@ -38,6 +38,8 @@ export default function Web() {
   const [showChat, setShowChat] = useState<boolean>(false);
   const [currFriend, setFriend] = useState<string>('');
 
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
@@ -412,36 +414,35 @@ export default function Web() {
   if (data && data.success) {
     return (
       <>
-      {isMobile ? <MobileComponent /> : <DesktopComponent />}
+      {isMobile ? <DesktopComponent /> : <DesktopComponent />}
     </>
     );
   
   }
-  function MobileComponent() {
-    return (
-      <>
-      <h1>hi</h1>
-      </>
-    )
-  }
 
   function DesktopComponent() {
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  }
+
   return (
-    <>
-  
-        <div className="container_chat">
-  
-          <div className="navbar_">
-  
-            <div className="buttons">
-  
-              <button onClick={setIsFriend}>Friends</button>
-  
-              <button onClick={setIsFriendRequest}>Friend Requests</button>
-  
-            </div>
-  
-          </div>
+  <>
+    <div className="container_chat">
+      <div className="navbar_">
+        <div className="buttons">
+          <button onClick={setIsFriend}>Friends</button>
+          <button onClick={setIsFriendRequest}>Friend Requests</button>
+          <button onClick={toggleMenu} className="icon-button">
+            <img src={ProfileInverted} className="friends_nav" />
+          </button>
+        </div>
+      </div>
+      {isMenuOpen && (
+        <div className="dropdown-menu">
+          <button onClick={() => console.log('Settings')}>Settings</button>
+          <button onClick={() => console.log('Logout')}>Logout</button>
+        </div>
+      )}
 
   
           <div className="chat_layout">

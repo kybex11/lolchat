@@ -229,7 +229,60 @@ function addFriend(req: Request, res: Response): void {
 
     function removeFriend(req: Request, res: Response) {
         const { userone, usertwo } = req.body;
-        //TODO: Make
+        
+        if(!users[userone] || !users[usertwo]) {
+            res.status(404).json({ success: false, message: 'User not found' });
+        } else {
+            if (!users[userone].friends.includes(usertwo)) {
+                res.status(400).json({ success: false, message: 'They are not friends' });
+            } else {
+                users[userone].friends = users[userone].friends.filter((friend: any) => friend !== usertwo);
+                users[usertwo].friends = users[usertwo].friends.filter((friend: any) => friend !== userone);
+            
+                const filePath1 = path.join(__dirname, 'dm', `${userone}+${usertwo}.json`);
+
+    const filePath2 = path.join(__dirname, 'dm', `${usertwo}+${userone}.json`);
+
+
+    try {
+
+        if (fs.existsSync(filePath1)) {
+
+            fs.unlinkSync(filePath1);
+
+        }
+
+        if (fs.existsSync(filePath2)) {
+
+            fs.unlinkSync(filePath2);
+
+        }
+
+    } catch (err) {
+
+        console.error('[server] Error removing DM files:', err);
+
+    }
+
+
+    // Сохраняем изменения в users.json
+
+    fs.writeFile('users.json', JSON.stringify(users), (err) => {
+
+        if (err) {
+
+            console.error(err);
+
+            return res.status(500).json({ success: false, message: 'Failed to remove friend' });
+
+        }
+
+
+        return res.json({ success: true, message: 'Friend removed successfully' });
+
+    });   
+            }
+        }
     }
 
     app.post('/newdm', createNewDM);//
