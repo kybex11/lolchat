@@ -3,7 +3,7 @@ import Navbar from "../components/navbar"
 import { checkLogin } from "../cookies";
 
 export default function LogOrReg() {
-    if (checkLogin()) {
+    if (!checkLogin()) {
         window.location.href = "/web"; 
      } else {
         return (

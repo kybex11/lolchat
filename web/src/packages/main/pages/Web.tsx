@@ -352,9 +352,7 @@ export default function Web() {
 
           <div className="message-view" key={index}>
 
-            <h3 className='h3_blk'>{msg.sender}</h3>
-
-            <h4 className='h4_blk'>{msg.content}</h4>
+            <h3 className='h3_blk'>{msg.sender}<h4 className='h4_blk'>{msg.content}</h4></h3>
 
           </div>
 
@@ -414,11 +412,19 @@ export default function Web() {
   if (data && data.success) {
     return (
       <>
-      {isMobile ? <DesktopComponent /> : <DesktopComponent />}
+      {isMobile ? <MobileComponent /> : <DesktopComponent />}
     </>
     );
   
   }
+
+  function MobileComponent() {
+    return (
+      <>
+      <h1>hi</h1>
+      </>
+    )
+  }  
 
   function DesktopComponent() {
   const toggleMenu = () => {
@@ -427,7 +433,9 @@ export default function Web() {
 
   const logout_press = () => {
     removeCookies();
-    window.location.href = "/router";
+    setTimeout(() => {
+      window.location.href = "/router";
+    }, 50);
   }
 
   return (
@@ -488,15 +496,3 @@ export default function Web() {
 
   return <div>Loading...</div>;
 }
-
-
-
-// <div className="profile_button">
-  
-//<button>
-  
-//<img src="/profile.svg" alt="My Profile" height="30" />
-
-//</button>
-
-//</div> 
