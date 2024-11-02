@@ -3,20 +3,20 @@ import { createRoot } from 'react-dom/client'
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import App from './pages/App.tsx'
-import Web from './pages/Web.tsx';
+import App from './packages/main/pages//App.tsx'
+import Web from './packages/main/pages//Web.tsx';
 
 import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom';
-import Register from './pages/Register.tsx';
-import Login from './pages/Login.tsx';
-import LogOrReg from './pages/logOrReg.tsx';
-import Downloads from './pages/mainpages/downloads.tsx';
-import About from './pages/mainpages/about.tsx';
-import Account from './pages/mainpages/account.tsx';
-import Settings from './pages/chat_pages/settings.tsx';
+import Register from './packages/main/pages//Register.tsx';
+import Login from './packages/main/pages//Login.tsx';
+import LogOrReg from './packages/main/pages//logOrReg.tsx';
+import Downloads from './packages/main/pages//mainpages/downloads.tsx';
+import About from './packages/main/pages//mainpages/about.tsx';
+import Account from './packages/main/pages//mainpages/account.tsx';
+import Settings from './packages/main/pages//chat_pages/settings.tsx';
 
 const resources = {
   en: {

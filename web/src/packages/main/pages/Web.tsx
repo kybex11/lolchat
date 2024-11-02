@@ -1,4 +1,4 @@
-import { checkLogin, getPassword, getUsername } from '../cookies';
+import { checkLogin, getPassword, getUsername, removeCookies } from '../cookies';
 import '../styles/index.css';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import FriendsComponent from './components/friends';
@@ -101,7 +101,7 @@ export default function Web() {
 
   // Функция для обновления списка друзей
   const updateFriends = useCallback(() => {
-    fetch('http://lolchat.online/server/getFriends', {
+    fetch('http://localhost:3001/getFriends', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -127,7 +127,7 @@ export default function Web() {
         password: _password,
       };
 
-      fetch('http://lolchat.online/server/login', {
+      fetch('http://localhost:3001/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -153,7 +153,7 @@ export default function Web() {
 
   // Функция для открытия чата с другом
   const openDM = useCallback((friend: string) => {
-    fetch('http://lolchat.online/server/getMessages', {
+    fetch('http://localhost:3001/getMessages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ export default function Web() {
       .then((data: MessageData) => {
         if (data.data === "DM not found") {
           // Создаем новый чат, если его не существует
-          fetch('http://lolchat.online/server/newdm', {
+          fetch('http://localhost:3001/newdm', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -192,7 +192,7 @@ export default function Web() {
     if (!message || !message.trim()) return;
 
 
-    fetch('http://lolchat.online/server/createMessage', {
+    fetch('http://localhost:3001/createMessage', {
 
       method: 'POST',
 
@@ -259,7 +259,7 @@ export default function Web() {
 
     if (messageContainerRef.current) {
 
-      fetch('http://lolchat.online/server/getMessages', {
+      fetch('http://localhost:3001/getMessages', {
 
         method: 'POST',
 
@@ -425,6 +425,11 @@ export default function Web() {
     setIsMenuOpen(!isMenuOpen);
   }
 
+  const logout_press = () => {
+    removeCookies();
+    window.location.href = "/router";
+  }
+
   return (
   <>
     <div className="container_chat">
@@ -440,7 +445,7 @@ export default function Web() {
       {isMenuOpen && (
         <div className="dropdown-menu">
           <button onClick={() => console.log('Settings')}>Settings</button>
-          <button onClick={() => console.log('Logout')}>Logout</button>
+          <button onClick={logout_press}>Logout</button>
         </div>
       )}
 

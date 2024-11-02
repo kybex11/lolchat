@@ -19,7 +19,7 @@ export default function FriendRequestsComponent() {
             return;
         }
 
-        fetch('http://lolchat.online/server/addFriends', {
+        fetch('http://localhost:3001/addFriends', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

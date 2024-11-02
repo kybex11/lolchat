@@ -33,7 +33,7 @@ export default function Login() {
             password: password,
         };
 
-        fetch('http://lolchat.online/server/login', {
+        fetch('http://localhost:3001/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

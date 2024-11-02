@@ -11,7 +11,7 @@ export default function FriendsComponent() {
     const username = getUsername();
     
     const updateFriends = () => {
-        fetch('http://lolchat.online/server/getFriends', {
+        fetch('http://localhost:3001/getFriends', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
