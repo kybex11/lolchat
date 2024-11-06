@@ -30,6 +30,8 @@ interface MessageStruct {
   sender: string;
 }
 
+
+
 export default function Web() {
   const [isFriends, setIsFriends] = useState<boolean>(false);
   const [isFriendRequests, setIsFriendRequests] = useState<boolean>(false);
@@ -41,6 +43,16 @@ export default function Web() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  }
+
+  const logout_press = () => {
+    removeCookies();
+    setTimeout(() => {
+      window.location.href = "/router";
+    }, 50);
+  }
 
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
@@ -63,13 +75,13 @@ export default function Web() {
         const messageContainer = messageContainerRef.current;
         const { scrollTop, scrollHeight, clientHeight } = messageContainer!;
         const isAtBottom = scrollHeight - scrollTop === clientHeight;
-  
+
         // Устанавливаем фокус на поле ввода
         messageInputRef.current.focus();
-  
+
         // Если пользователь был внизу, прокручиваем обратно
         if (isAtBottom) {
-            messageContainer!.scrollTop = messageContainer!.scrollHeight;
+          messageContainer!.scrollTop = messageContainer!.scrollHeight;
         }
       }
     }, [showChat]); // Зависимость от showChat
@@ -81,7 +93,7 @@ export default function Web() {
         messageInputRef.current.value = '';
       }
     }
-  
+
     return (
       <div>
         <input
@@ -378,12 +390,12 @@ export default function Web() {
     <div>
       {showChat && (
         <div className="message-conatiner">
-          <ChatView/>
+          <ChatView />
         </div>
       )}
       {!showChat && <NoChatView />}
       {showChat && (
-        <InputMessage/>
+        <InputMessage />
       )}
     </div>
   );
@@ -412,87 +424,126 @@ export default function Web() {
   if (data && data.success) {
     return (
       <>
-      {isMobile ? <MobileComponent /> : <DesktopComponent />}
-    </>
+        {isMobile ? <MobileComponent /> : <DesktopComponent />}
+      </>
     );
-  
+
   }
 
   function MobileComponent() {
     return (
       <>
-      <h1>hi</h1>
+        <div className="container_chat">
+          <div className="navbar_">
+            <div className="buttons">
+              <button onClick={setIsFriend}>Friends</button>
+              <button onClick={setIsFriendRequest}>Friend Requests</button>
+              <button onClick={toggleMenu} className="icon-button">
+                <img src={ProfileInverted} className="friends_nav" />
+              </button>
+            </div>
+          </div>
+          {isMenuOpen && (
+            <div className="dropdown-menu">
+              <button onClick={() => console.log('Settings')}>Settings</button>
+              <button onClick={logout_press}>Logout</button>
+            </div>
+          )}
+
+
+          <div className="chat_layout">
+
+            <div className="friends_list">
+              <h1>Friends</h1>
+              {friends.map(friend => (
+                <div key={friend}>
+                  <button className='friends_button' onClick={() => openDM(friend)}>
+                    <div className="friend_item">
+                      {friend}
+                      <img className='friends_button_image' src={ProfileInverted} alt="profile-invert" />
+                    </div>
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {isFriends && <FriendsComponent />}
+
+            {isFriendRequests && <FriendRequestsComponent />}
+
+            <div className="chat_container">
+
+              {showChat && <Chat />}
+
+              {!showChat && <NoChatView />}
+
+            </div>
+
+          </div>
+
+        </div>
+
       </>
     )
-  }  
+  }
 
   function DesktopComponent() {
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  }
 
-  const logout_press = () => {
-    removeCookies();
-    setTimeout(() => {
-      window.location.href = "/router";
-    }, 50);
-  }
-
-  return (
-  <>
-    <div className="container_chat">
-      <div className="navbar_">
-        <div className="buttons">
-          <button onClick={setIsFriend}>Friends</button>
-          <button onClick={setIsFriendRequest}>Friend Requests</button>
-          <button onClick={toggleMenu} className="icon-button">
-            <img src={ProfileInverted} className="friends_nav" />
-          </button>
-        </div>
-      </div>
-      {isMenuOpen && (
-        <div className="dropdown-menu">
-          <button onClick={() => console.log('Settings')}>Settings</button>
-          <button onClick={logout_press}>Logout</button>
-        </div>
-      )}
-
-  
-          <div className="chat_layout">
-  
-          <div className="friends_list">
-  <h1>Friends</h1>
-  {friends.map(friend => (
-    <div key={friend}>
-      <button className='friends_button' onClick={() => openDM(friend)}>
-        <div className="friend_item">
-          {friend}
-          <img className='friends_button_image' src={ProfileInverted} alt="profile-invert" />
-        </div>
-      </button>
-    </div>
-  ))}
-</div>
-  
-              {isFriends && <FriendsComponent />}
-  
-              {isFriendRequests && <FriendRequestsComponent />}
-  
-            <div className="chat_container">
-  
-              {showChat && <Chat />}
-  
-              {!showChat && <NoChatView />}
-  
+    return (
+      <>
+        <div className="container_chat">
+          <div className="navbar_">
+            <div className="buttons">
+              <button onClick={setIsFriend}>Friends</button>
+              <button onClick={setIsFriendRequest}>Friend Requests</button>
+              <button onClick={toggleMenu} className="icon-button">
+                <img src={ProfileInverted} className="friends_nav" />
+              </button>
             </div>
-  
           </div>
-  
+          {isMenuOpen && (
+            <div className="dropdown-menu">
+              <button onClick={() => console.log('Settings')}>Settings</button>
+              <button onClick={logout_press}>Logout</button>
+            </div>
+          )}
+
+
+          <div className="chat_layout">
+
+            <div className="friends_list">
+              <h1>Friends</h1>
+              {friends.map(friend => (
+                <div key={friend}>
+                  <button className='friends_button' onClick={() => openDM(friend)}>
+                    <div className="friend_item">
+                      {friend}
+                      <img className='friends_button_image' src={ProfileInverted} alt="profile-invert" />
+                    </div>
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {isFriends && <FriendsComponent />}
+
+            {isFriendRequests && <FriendRequestsComponent />}
+
+            <div className="chat_container">
+
+              {showChat && <Chat />}
+
+              {!showChat && <NoChatView />}
+
+            </div>
+
+          </div>
+
         </div>
-  
+
       </>
-  )
-}
+    )
+  }
 
   return <div>Loading...</div>;
 }

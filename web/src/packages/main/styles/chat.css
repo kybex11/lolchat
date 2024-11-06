@@ -7,6 +7,7 @@
 
 body {
     overflow: hidden;
+    touch-action: none;
     padding: 0;
     margin: 0;
 }
@@ -30,6 +31,7 @@ body {
 * {
     user-select: none;
     -webkit-user-select: none;
+    touch-action: none;
 }
 
 .navbar_ button {
