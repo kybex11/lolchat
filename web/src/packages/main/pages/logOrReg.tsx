@@ -21,9 +21,6 @@ export default function LogOrReg() {
     )
 
     function MobileComponent() {
-        if (!checkLogin()) {
-            window.location.href = "/web"; 
-         } else {
             return (
              <>
              <MobileNavbar/>
@@ -34,13 +31,9 @@ export default function LogOrReg() {
              </div>
              </>
          ) 
-         }
     }
     
     function DesktopComponent() {
-        if (!checkLogin()) {
-            window.location.href = "/web"; 
-         } else {
             return (
              <>
              <Navbar/>
@@ -51,6 +44,5 @@ export default function LogOrReg() {
              </div>
              </>
          ) 
-         }
     }
 }
