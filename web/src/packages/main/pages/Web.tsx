@@ -39,6 +39,8 @@ export default function Web() {
   const [data, setData] = useState<ResponseData | null>(null);
   const [showChat, setShowChat] = useState<boolean>(false);
   const [currFriend, setFriend] = useState<string>('');
+  const [showFriends, setShowFriends] = useState<boolean>(true); // Состояние для отображения списка друзей
+  const [itShowChat, setItShowChat] = useState<boolean>(false);
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -431,33 +433,46 @@ export default function Web() {
   }
 
   function MobileComponent() {
-    return (
-      <>
-        <div className="container_chat">
-          <div className="navbar_">
-            <div className="buttons">
-              <button onClick={setIsFriend}>Friends</button>
-              <button onClick={setIsFriendRequest}>Friend Requests</button>
-              <button onClick={toggleMenu} className="icon-button">
-                <img src={ProfileInverted} className="friends_nav" />
-              </button>
-            </div>
+
+  const toggleFriendsList = () => {
+    setShowFriends(!showFriends);
+    setItShowChat(!itShowChat);
+  };
+
+  const handleFriendSelect = (friend: string) => {
+    openDM(friend);
+    setShowFriends(false);
+    setItShowChat(!itShowChat);
+  };
+
+  return (
+    <>
+      <div className="container_chat">
+        <div className="navbar_">
+          <div className="buttons">
+            <button onClick={toggleFriendsList}>
+              {showFriends ? '👤' : '👥'} {/* Используем эмодзи для переключения списка друзей */}
+            </button>
+            <button onClick={setIsFriendRequest}>Friend Requests</button>
+            <button onClick={toggleMenu} className="icon-button">
+              <img src={ProfileInverted} className="friends_nav" />
+            </button>
           </div>
-          {isMenuOpen && (
-            <div className="dropdown-menu">
-              <button onClick={() => console.log('Settings')}>Settings</button>
-              <button onClick={logout_press}>Logout</button>
-            </div>
-          )}
+        </div>
+        {isMenuOpen && (
+          <div className="dropdown-menu">
+            <button onClick={() => console.log('Settings')}>Settings</button>
+            <button onClick={logout_press}>Logout</button>
+          </div>
+        )}
 
-
-          <div className="chat_layout">
-
-            <div className="friends_list">
-              <h1>Friends</h1>
+        <div className="chat_layout">
+          {showFriends && (
+            <div className="friends_list_mobile">
+              <h1 className='centered'>Friends</h1>
               {friends.map(friend => (
                 <div key={friend}>
-                  <button className='friends_button' onClick={() => openDM(friend)}>
+                  <button className='friends_button' onClick={() => handleFriendSelect(friend)}>
                     <div className="friend_item">
                       {friend}
                       <img className='friends_button_image' src={ProfileInverted} alt="profile-invert" />
@@ -466,26 +481,25 @@ export default function Web() {
                 </div>
               ))}
             </div>
+          )}
 
-            {isFriends && <FriendsComponent />}
+          {isFriendRequests && <FriendRequestsComponent />}
 
-            {isFriendRequests && <FriendRequestsComponent />}
-
-            <div className="chat_container">
-
-              {showChat && <Chat />}
-
-              {!showChat && <NoChatView />}
-
-            </div>
-
+          <div className="chat_container">
+            {itShowChat && (
+              <div>
+                {showChat && <Chat />}
+                {!showChat && <NoChatView />}
+              </div>
+            )}
+            
           </div>
 
         </div>
-
-      </>
-    )
-  }
+      </div>
+    </>
+  );
+}
 
   function DesktopComponent() {
 

@@ -27,6 +27,14 @@ body {
     flex-direction: column;
 }
 
+.friends_list_mobile {
+    background-color: rgba(11, 11, 11, 0.5);
+    padding: 10px;
+    overflow-y: auto;
+    flex-direction: column;
+    width: 100vw;
+}
+
 
 * {
     user-select: none;
@@ -195,4 +203,8 @@ body {
 
 .dropdown-menu button:hover {
     background-color: rgba(37, 172, 255, 0.5);
+}
+
+.centered {
+    text-align: center;
 }
