@@ -125,20 +125,19 @@ body {
     border: none;
     height: 40px;
     width: 200px;
-    border-radius: 15px;
+    border-radius: 0 !important;
 }
 
 .send_field_chat {
     border: none;
     height: 60px;
     width: 100px;
-    border-radius: 15px;
     background-color: rgb(37, 172, 255);
     color: white;
     font-size: large;
+    border-radius: 0 !important;
     cursor: pointer;
 }
-
 
 .navbar_ {
     display: flex;

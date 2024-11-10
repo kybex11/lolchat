@@ -397,7 +397,10 @@ export default function Web() {
       )}
       {!showChat && <NoChatView />}
       {showChat && (
-        <InputMessage />
+        <div style={{ position: 'absolute', bottom: 0, width: '100%'}}>
+          <InputMessage />
+        </div>
+        
       )}
     </div>
   );
