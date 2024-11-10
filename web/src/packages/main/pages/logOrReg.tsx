@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 import Navbar from "../components/navbar"
-import { checkLogin } from "../cookies";
 import { useEffect, useState } from "react";
 import MobileNavbar from "../components/mobilenavbar";
 
